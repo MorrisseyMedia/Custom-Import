@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Custom Imports</title>
+	<script src="./lib/CSInterface.js"></script>
+	<script type="text/javascript">
+		function runAll() {
+			var checkBoxValue = document.getElementById("copyTemplate");
+			//var selector = document.getElementById("defaultLocation");
+			var defaultLocation = document.getElementById("locationPath");
+			defaultLocation = defaultLocation.textContent
+			if (checkBoxValue.checked == true) {
+				var checkBoxValueStr = "Ticked"
+			} else {
+				var checkBoxValueStr = "Unticked"
+			}
+			var eval = '$.runScript.importFolderCopyTemp("' + checkBoxValueStr + '", "' + defaultLocation + '")'
+			var cs = new CSInterface();
+			cs.evalScript(eval)
+		}
+		function setDefaultLocation() {
+			var defaultLocation = document.getElementById("locationPath");
+			defaultLocation = defaultLocation.textContent
+			var cs = new CSInterface();
+			cs.evalScript('setDefaultLocation("' + defaultLocation + '")', function (path) {
+				if (path != "null") {
+					document.getElementById("locationPath").textContent = path;
+					var regEx = new RegExp("[^\/]*$");
+					var regExReturn = regEx.exec(path);
+					document.getElementById("locationID").textContent = regExReturn;
+				}
+			});
+		}
+		function addToQueue() {
+			var outputPath = document.getElementById("outputPath");
+			var presetPath = document.getElementById("presetPath");
+			var renderOptions = document.getElementById("renderOptions");
+			renderOptions = renderOptions.value;
+			var removeFromQueueCheck = document.getElementById("removeFromQueue");
+			if (removeFromQueueCheck.checked == true) {
+				var removeFromQueueCheckStr = 1
+			} else {
+				var removeFromQueueCheckStr = 0
+			}
+			var cs = new CSInterface();
+			cs.evalScript('addToQueue("' + outputPath.textContent + '", "' + presetPath.textContent + '", ' + renderOptions + ', ' + removeFromQueueCheck.checked + ')')
+		}
+		function addBinsToQueue() {
+			var binColour = document.getElementById("binColour");
+			binColour = binColour.value;
+			var outputPath = document.getElementById("outputPath");
+			var presetPath = document.getElementById("presetPath");
+			var renderOptions = document.getElementById("renderOptions");
+			renderOptions = renderOptions.value;
+			var removeFromQueueCheck = document.getElementById("removeFromQueue");
+			if (removeFromQueueCheck.checked == true) {
+				var removeFromQueueCheckStr = 1
+			} else {
+				var removeFromQueueCheckStr = 0
+			}
+			var cs = new CSInterface();
+			cs.evalScript('addBinsToQueue("' + outputPath.textContent + '", "' + presetPath.textContent + '", ' + renderOptions + ', ' + removeFromQueueCheck.checked + ', ' + binColour + ')')
+		}
+		function setOutputFolder() {
+			var outputPath = document.getElementById("outputPath");
+			outputPath = outputPath.textContent
+			var cs = new CSInterface();
+			cs.evalScript('setOutputFolder("' + outputPath + '")', function (path) {
+				if (path != "null") {
+					document.getElementById("outputPath").textContent = path;
+					var regEx = new RegExp("[^\/]*$");
+					var regExReturn = regEx.exec(path);
+					document.getElementById("outputID").textContent = regExReturn;
+				}
+			});
+		}
+
+		function setOutputPreset() {
+			var presetPath = document.getElementById("presetPath");
+			presetPath = presetPath.textContent;
+			var cs = new CSInterface();
+			cs.evalScript('setOutputPreset("' + presetPath + '")', function (path) {
+				if (path != "null") {
+					document.getElementById("presetPath").textContent = path;
+					var regEx = new RegExp("[^\/]*$");
+					var regExReturn = regEx.exec(path);
+					document.getElementById("presetID").textContent = regExReturn;
+				}
+			});
+		}
+	</script>
+	<script>
+		var cs = new CSInterface();
+		cs.evalScript('getDefaultLocation("Name")', function (defaultFolderName) {
+			document.getElementById("locationID").textContent = defaultFolderName;
+		});
+		cs.evalScript('getDefaultLocation("Path")', function (defaultFolder) {
+			document.getElementById("locationPath").textContent = defaultFolder;
+		});
+		cs.evalScript('getOutputFolder("Name")', function (defaultFolder) {
+			document.getElementById("outputID").textContent = defaultFolder;
+		});
+		cs.evalScript('getOutputFolder("Path")', function (defaultFolder) {
+			document.getElementById("outputPath").textContent = defaultFolder;
+		});
+		cs.evalScript('getPreset("Name")', function (defaultFolder) {
+			document.getElementById("presetID").textContent = defaultFolder;
+		});
+		cs.evalScript('getPreset("Path")', function (defaultFolder) {
+			document.getElementById("presetPath").textContent = defaultFolder;
+		});
+	</script>
+	<style>
+		body {
+
+			background-color: #232323;
+			color: #a6a6a6;
+			text-align: center;
+			margin: 0;
+			height: 100%;
+			
+			font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+			font-size: 12px;
+		}
+
+		input {
+			display: block;
+			margin: auto;
+			max-width: 100%;
+		}
+
+		.thebtn {
+			background-color: #232323;
+			color: #a6a6a6;
+			font-size: 13px;
+			width: 135px;
+			height: 24px;
+			margin: 4px;
+			align-items: center;
+			justify-content: center;
+			border-radius: 30px;
+			border: 1px solid #a6a6a6;
+		}
+
+		.thebtn:hover {
+			background-color: #a6a6a6;
+			color: #232323;
+		}
+
+		.thebtn:focus {
+			outline: none;
+		}
+
+		.thechk {
+			font-size: 12px;
+			margin: 3px;
+			text-align: center;
+			display: inline;
+		}
+
+		.selector {
+			display: inline;
+
+		}
+
+		label {
+			font-size: 12px;
+			text-align: center;
+			display: inline;
+		}
+
+		.select-style {
+			text-align: center;
+			border: 1px solid #a6a6a6;
+			width: 135px;
+			height: 22px;
+			border-radius: 20px;
+			overflow-x: hidden;
+			overflow-y: visible;
+			background: #232323;
+			color: #a6a6a6;
+			text-align-last: center;
+		}
+
+		.select-style select {
+			font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+			font-size: 12px;
+			text-align: center;
+			padding: 0px 0px;
+			width: 135px;
+			height: 22px;
+			border-radius: 20px;
+			border: none;
+			box-shadow: none;
+			background: transparent;
+			background-image: none;
+			-webkit-appearance: none;
+			background: #232323;
+			color: #a6a6a6;
+			overflow-x: hidden;
+			overflow-y: visible;
+		}
+		.select-style select:hover {
+			background-color: #a6a6a6;
+			color: #232323;
+			/* font-size: 10px; */
+			overflow-x: hidden;
+			overflow-y: visible;
+		}
+
+		.select-style select:focus {
+			outline: none;
+			overflow-y: visible;
+		}
+		.select-style select:active {
+			font-size: 9px;
+			overflow-y: visible;
+		}
+	</style>
+</head>
+
+<body>
+	<table style="width:100%;">
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="runAll()">Choose Folder</button>
+			</td>
+		</tr>
+		<tr>
+			<td style="display: inline;">
+				<input class="thechk" type="checkbox" id="copyTemplate" name="copyTemplate" checked>
+				<label for="copyTemplate">Copy -Template</label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="setDefaultLocation()">Set Default
+					Folder</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label id="locationID">1_Footage</label>
+				<label id="locationPath" style="display: none;"></label>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<table style="width:100%;">
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="addToQueue()">Add to Queue</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="addBinsToQueue()">Add Bins to Queue</button>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding-top: 10px;">
+				<div class="select-style" style="display: inline-block">
+					<select id="binColour" >
+						<option value="0">Violet</option>
+						<option value="1">Iris</option>
+						<option value="2">Caribbean</option>
+						<option value="3">Lavender</option>
+						<option value="4">Cerulean</option>
+						<option value="5">Forest</option>
+						<option value="6">Rose</option>
+						<option value="7">Mango</option>
+						<option value="8" selected>Purple</option>
+						<option value="9">Blue</option>
+						<option value="10">Teal</option>
+						<option value="11">Magenta</option>
+						<option value="12">Tan</option>
+						<option value="13">Green</option>
+						<option value="14">Brown</option>
+						<option value="15">Yellow</option>
+					</select>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="setOutputFolder()">Set Output Folder</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label id="outputID"></label>
+				<label id="outputPath" style="display: none;"></label>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding-top: 10px;">
+				<div class="select-style" style="display: inline-block">
+					<select id="renderOptions">
+						<option value="app.encoder.ENCODE_IN_TO_OUT" selected>In to Out</option>
+						<option value="app.encoder.ENCODE_WORKAREA">Work Area</option>
+						<option value="app.encoder.ENCODE_ENTIRE">Entire Sequence</option>
+					</select>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="thebtn" id="runButton" type="run" onclick="setOutputPreset()">Set Output
+					Preset</button>
+			</td>
+		</tr>
+		<tr>
+			<td style="display: inline;">
+				<label id="presetID"></label>
+				<label id="presetPath" style="display: none;"></label>
+
+				<div style="height: 8px;"></div>
+
+				<input class="thechk" type="checkbox" id="removeFromQueue" checked>
+				<label for="removeFromQueue">Remove from queue<br>after render</label>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>
+
+<!--				<label class="selector" for="cars">Default Location:</label>
+				<select id="defaultLocation" name="cars" size="4">
+					<option value="Default_Location">Default Location</option>
+					<option value="9_4k High fps">9_4k High fps</option>
+					<option value="8_4k 50_60fps" selected>8_4k 50_60fps</option>
+					<option value="7_4k 25_30fps">7_4k 25_30fps</option>
+					<option value="6_1080p High fps">6_1080p High fps</option>
+					<option value="5_1080p 50_60fps">5_1080p 50_60fps</option>
+					<option value="4_1080p 25_30fps">4_1080p 25_30fps</option>
+					<option value="3_720p High fps">3_720p High fps</option>
+					<option value="2_720p 50_60fps">2_720p 50_60fps</option>
+					<option value="1_720p 25_30fps">1_720p 25_30fps</option>
+				</select>
+			
+
+				' + selector.value + '
+			-->
